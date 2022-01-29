@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SalesWG.Server.Interfaces.Repositories;
+using SalesWG.Shared.Data;
 using SalesWG.Shared.Models;
 
 namespace SalesWG.Server.Controllers
@@ -18,12 +19,28 @@ namespace SalesWG.Server.Controllers
         }
 
         // GET: api/Categories
-        [HttpGet]
-        public async Task<List<Category>> GetCategories()
+        [HttpGet("GetCategories")]
+        public async Task<IEnumerable<Category>> GetCategories()
         {
-            var categories = await _categoryRepository.GetAll().ToListAsync();
+            var categories = await _categoryRepository
+                .GetAll()
+                .ToListAsync();
 
             return categories;
+        }
+
+        [HttpGet("GetCategoriesByName/{name}")]
+        public async Task<IEnumerable<ParentCategory>> GetCategoriesByName(string name)
+        {
+            var parentCategories = await _categoryRepository
+                .FindAsync(x => x.Name.ToLower().Contains(name.ToLower()))
+                .Select(x => new ParentCategory
+                {
+                    Id = x.Id,
+                    Name = x.Name
+                }).Take(10).ToListAsync();
+
+            return parentCategories;
         }
 
         // GET: api/Categories/5

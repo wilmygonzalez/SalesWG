@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SalesWG.Shared.Helpers.Interfaces;
 
 namespace SalesWG.Shared.Helpers
 {

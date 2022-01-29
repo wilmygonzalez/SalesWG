@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using SalesWG.Shared.Data;
 using SalesWG.Shared.Models;
 
 namespace SalesWG.Server.Interfaces.Repositories
@@ -7,7 +8,7 @@ namespace SalesWG.Server.Interfaces.Repositories
     {
         IQueryable<T> GetAll();
         Task<T> GetByIdAsync(long id);
-        IEnumerable<T> FindAsync(Expression<Func<T, bool>> expression);
+        IQueryable<T> FindAsync(Expression<Func<T, bool>> expression);
         Task InsertAsync(T entity);
         Task InsertRangeAsync(IEnumerable<T> entity);
         Task UpdateAsync(T entity);

@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SalesWG.Shared.Models
+namespace SalesWG.Shared.Data
 {
     public class BaseEntity
     {

@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SalesWG.Shared.Models
+namespace SalesWG.Shared.Data
 {
     public class Category : BaseEntity
     {
@@ -9,5 +8,6 @@ namespace SalesWG.Shared.Models
         public string Name { get; set; }
         [Required]
         public string Description { get; set; }
+        public int ParentCategoryId { get; set; }
     }
 }

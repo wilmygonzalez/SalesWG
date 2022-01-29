@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using SalesWG.Server.Data;
 using SalesWG.Server.Interfaces.Repositories;
+using SalesWG.Shared.Data;
 using SalesWG.Shared.Models;
 
 namespace SalesWG.Server.Repositories
@@ -25,7 +26,7 @@ namespace SalesWG.Server.Repositories
             return await _dbContext.Set<T>().FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public IEnumerable<T> FindAsync(Expression<Func<T, bool>> expression)
+        public IQueryable<T> FindAsync(Expression<Func<T, bool>> expression)
         {
             return _dbContext.Set<T>().Where(expression);
         }

@@ -1,5 +1,7 @@
-﻿@using SalesWG.Shared.Models;
-@inject HttpClient Http
+﻿@using SalesWG.Shared.Data;
+@using SalesWG.Shared.Models
+
+@inject HttpClient _httpClient
 
 <EditForm Model="@category" OnValidSubmit="SaveAsync">
     <DataAnnotationsValidator />
@@ -9,6 +11,9 @@
             Label="Name" Variant="Variant.Outlined" Margin="Margin.Dense"></MudTextField>
         <MudTextField @bind-Value="category.Description" For="@(() => category.Description)" 
             Label="Description" Variant="Variant.Outlined" Margin="Margin.Dense" Lines="7" />
+        <MudAutocomplete T="ParentCategory" Label="Parent Category" @bind-Value="parentCategory" SearchFunc="@SearchCategory" 
+            Margin="Margin.Dense" Variant="Variant.Outlined" ToStringFunc="@(e => e.Name)" />
+
     </DialogContent>
     <DialogActions >
         <MudButton Variant="Variant.Filled" OnClick="Cancel" Size="Size.Medium">Cancel</MudButton>
@@ -19,18 +24,24 @@
 </EditForm>
 
 @code {
-    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    [CascadingParameter] MudDialogInstance _mudDialog { get; set; }
 
     private Category category = new();
+    private ParentCategory parentCategory = new();
 
     private async Task SaveAsync()
     {
-        await Http.PostAsJsonAsync<Category>("/api/category/", category);
-        MudDialog.Close(DialogResult.Ok(true));
+        await _httpClient.PostAsJsonAsync<Category>("/api/category/", category);
+        _mudDialog.Close(DialogResult.Ok(true));
+    }
+
+    private async Task<IEnumerable<ParentCategory>> SearchCategory(string name)
+    {
+        return await _httpClient.GetFromJsonAsync<IEnumerable<ParentCategory>>($"/api/category/GetCategoriesByName/{name}");
     }
 
     private void Cancel()
     {
-        MudDialog.Cancel();
+        _mudDialog.Cancel();
     }
 }

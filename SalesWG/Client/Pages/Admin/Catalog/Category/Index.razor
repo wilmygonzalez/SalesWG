@@ -1,6 +1,6 @@
 ﻿@page "/"
 @using SalesWG.Client.Shared.Components
-@using SalesWG.Shared.Models
+@using SalesWG.Shared.Data
 
 @inject IDialogService _dialogService
 @inject HttpClient _httpClient
@@ -10,8 +10,7 @@
         Add Category
 </MudButton>
 
-
-<MudTable Elevation="25" Items="@categories" Hover="true" Breakpoint="Breakpoint.Xs" HorizontalScrollbar="true" LoadingProgressColor="Color.Info">
+<MudTable Elevation="3" Items="@categories" Hover="true" Breakpoint="Breakpoint.Xs" HorizontalScrollbar="true" LoadingProgressColor="Color.Info">
     <ToolBarContent>
         <MudText Typo="Typo.h6">Categories</MudText>
         <MudSpacer />
@@ -37,22 +36,6 @@
        </MudTd>
     </RowTemplate>
 </MudTable>
-
-@*<MudDataGrid MultiSelection="true" Items="@categories" Sortable="true" Filterable="true">
-    <ToolBarContent>
-        <MudText Typo="Typo.h6">Periodic Elements</MudText>
-        <MudSpacer />
-        <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
-            AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
-    </ToolBarContent>
-    <Columns>
-        <Column T="Category" Field="Id" Title="#" />
-        <Column T="Category" Field="Name" />
-        <Column T="Category" Field="Description" />
-        <Column T="Category" Field="CreatedDate" />
-        <Column T="Category" Field="UpdatedDate" />
-    </Columns>
-</MudDataGrid>*@
 
 @code {
     DialogOptions options = new DialogOptions() { CloseButton = true };
@@ -99,7 +82,7 @@
 
     private async Task GetAllCategories()
     {
-        categories = await _httpClient.GetFromJsonAsync<List<Category>>("api/category");
+        categories = await _httpClient.GetFromJsonAsync<List<Category>>("api/category/GetCategories");
     }
 
 
