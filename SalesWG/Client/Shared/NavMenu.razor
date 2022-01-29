@@ -1,0 +1,92 @@
+﻿@using SalesWG.Client.Shared.Components
+
+<UserCard Style="background-color: var(--mud-palette-drawer-background);color: var(--mud-palette-drawer-text);"/>
+<MudDivider Class="mb-4" />
+
+<MudNavMenu Rounded="true" Margin="Margin.Normal" Color="Color.Tertiary" Class="pa-2">
+    
+    <MudText Typo="Typo.subtitle2" Color="Color.Inherit" Class="ml-4 my-3">Personal</MudText>
+    <MudNavLink Href="/personal/dashboard" Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.Dashboard">Dashboard</MudNavLink>
+    <MudNavLink Href="/personal/account" Icon="@Icons.Material.Outlined.Person">Account</MudNavLink>
+
+    <MudNavGroup Title="Catalog" Icon="@Icons.Material.Outlined.LibraryBooks">
+        <MudNavLink Href="/catalog/product" Icon="@Icons.Material.Outlined.Inventory">Products</MudNavLink>
+        <MudNavLink Href="/catalog/category" Icon="@Icons.Material.Outlined.Category">Categories</MudNavLink>
+        <MudNavLink Href="/catalog/manufacturer" Icon="@Icons.Material.Outlined.Crop32">Manufacturers</MudNavLink>
+    </MudNavGroup>
+
+    <MudNavGroup Title="Promotions" Icon="@Icons.Material.Outlined.NewReleases">
+    </MudNavGroup>
+
+     <MudNavGroup Title="Reports" Icon="@Icons.Material.Outlined.TableChart">
+    </MudNavGroup>
+
+    <MudNavGroup Title="Configuration" Icon="@Icons.Material.Outlined.SettingsApplications">
+    </MudNavGroup>
+
+</MudNavMenu>
+
+@*<MudPaper Width="250px" Elevation="0">
+    <MudNavMenu Margin="Margin.Normal" Rounded="true" Color="Color.Secondary" Class="pa-2">
+        <MudText Typo="Typo.h6" Class="px-4">My Application</MudText>
+        <MudText Typo="Typo.body2" Class="px-4 mud-text-secondary">Secondary Text</MudText>
+        <MudDivider Class="my-2"/>
+
+        <MudNavGroup Title="Catalog" Icon="@Icons.Material.Outlined.LibraryBooks">
+            <MudNavLink Href="/catalog/product" Icon="@Icons.Material.Outlined.Inventory">Products</MudNavLink>
+            <MudNavLink Href="/catalog/category" Icon="@Icons.Material.Outlined.Category">Categories</MudNavLink>
+            <MudNavLink Href="/catalog/manufacturer" Icon="@Icons.Material.Outlined.Crop32">Manufacturers</MudNavLink>
+        </MudNavGroup>
+
+        <MudNavGroup Title="Promotions" Icon="@Icons.Material.Outlined.NewReleases">
+        </MudNavGroup>
+
+         <MudNavGroup Title="Reports" Icon="@Icons.Material.Outlined.TableChart">
+         </MudNavGroup>
+
+         <MudNavGroup Title="Configuration" Icon="@Icons.Material.Outlined.SettingsApplications">
+         </MudNavGroup>
+       
+    </MudNavMenu>
+</MudPaper>*@
+
+@*<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">SalesWG</a>
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</div>
+
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> Home
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="counter">
+                <span class="oi oi-plus" aria-hidden="true"></span> Counter
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="fetchdata">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
+            </NavLink>
+        </div>
+    </nav>
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}
+*@

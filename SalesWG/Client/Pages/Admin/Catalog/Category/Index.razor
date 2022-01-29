@@ -1,0 +1,107 @@
+﻿@page "/"
+@using SalesWG.Client.Shared.Components
+@using SalesWG.Shared.Models
+
+@inject IDialogService _dialogService
+@inject HttpClient _httpClient
+
+<MudButton OnClick="OpenAddDialog" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.AddBox" Color="Color.Info"
+        Class="mb-3">
+        Add Category
+</MudButton>
+
+
+<MudTable Elevation="25" Items="@categories" Hover="true" Breakpoint="Breakpoint.Xs" HorizontalScrollbar="true" LoadingProgressColor="Color.Info">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Categories</MudText>
+        <MudSpacer />
+        <MudTextField @bind-Value="searchString" Placeholder="Search for Customers..." Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>#</MudTh>
+        <MudTh>Sign</MudTh>
+        <MudTh>Name</MudTh>
+        <MudTh>Actions</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="#">@context.Id</MudTd>
+        <MudTd DataLabel="Sign">@context.Name</MudTd>
+        <MudTd DataLabel="Name">@context.Description</MudTd>
+        <MudTd DataLabel="Actions">
+            <MudTooltip Text="Edit">
+                <MudIconButton OnClick="@(() => OpenEditDialog(context))" Icon="@Icons.Material.Filled.Edit" Variant="Variant.Filled" Color="Color.Warning" Size="Size.Medium" />
+            </MudTooltip>
+            <MudTooltip Text="Delete">
+                <MudIconButton OnClick="@(() => OpenDeleteDialog(context.Id))" Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled" Color="Color.Error" Size="Size.Medium" />
+            </MudTooltip>
+       </MudTd>
+    </RowTemplate>
+</MudTable>
+
+@*<MudDataGrid MultiSelection="true" Items="@categories" Sortable="true" Filterable="true">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Periodic Elements</MudText>
+        <MudSpacer />
+        <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
+            AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+    <Columns>
+        <Column T="Category" Field="Id" Title="#" />
+        <Column T="Category" Field="Name" />
+        <Column T="Category" Field="Description" />
+        <Column T="Category" Field="CreatedDate" />
+        <Column T="Category" Field="UpdatedDate" />
+    </Columns>
+</MudDataGrid>*@
+
+@code {
+    DialogOptions options = new DialogOptions() { CloseButton = true };
+
+    private IEnumerable<Category> categories = new List<Category>();
+    private string searchString;
+    private bool sortByNameLength;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetAllCategories();
+    }
+
+    private async Task OpenAddDialog()
+    {
+        var dialog = _dialogService.Show<Add>("New Category", options);
+
+        var result = await dialog.Result;
+        if (!result.Cancelled)
+        {
+            await GetAllCategories();
+        }
+    }
+
+    private async Task OpenEditDialog(Category category)
+    {
+        var parameters = new DialogParameters();
+        parameters.Add("Category", category);
+
+        var dialog = _dialogService.Show<Edit>($"Edit Category #{category.Id}", parameters, options);
+
+        var result = await dialog.Result;
+        if (!result.Cancelled)
+        {
+            await GetAllCategories();
+        }
+    }
+
+    private async Task OpenDeleteDialog(int id)
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+        _dialogService.Show<Dialog>("Simple Dialog", options);
+    }
+
+    private async Task GetAllCategories()
+    {
+        categories = await _httpClient.GetFromJsonAsync<List<Category>>("api/category");
+    }
+
+
+
+}
