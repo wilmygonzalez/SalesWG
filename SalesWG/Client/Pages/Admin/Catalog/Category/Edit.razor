@@ -1,4 +1,4 @@
-﻿@using SalesWG.Shared.Data;
+﻿@using SalesWG.Shared.Models.Admin.Catalog.Category
 @inject HttpClient Http
 
 <EditForm Model="@category" OnValidSubmit="SaveAsync">
@@ -19,11 +19,11 @@
 
 @code {
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
-    [Parameter] public Category category { get; set; }
+    [Parameter] public AddEditCategoryRequest category { get; set; }
 
     private async Task SaveAsync()
     {
-        await Http.PutAsJsonAsync<Category>("/api/category/", category);
+        await Http.PutAsJsonAsync<AddEditCategoryRequest>("/api/admin/category/", category);
         MudDialog.Close(DialogResult.Ok(true));
 
         StateHasChanged();

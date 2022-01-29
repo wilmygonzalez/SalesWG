@@ -1,9 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using SalesWG.Server.Data;
-using SalesWG.Server.Interfaces.Repositories;
-using SalesWG.Shared.Data;
-using SalesWG.Shared.Models;
 
 namespace SalesWG.Server.Repositories
 {

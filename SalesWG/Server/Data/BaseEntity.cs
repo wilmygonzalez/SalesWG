@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SalesWG.Shared.Data
+namespace SalesWG.Server.Data
 {
     public class BaseEntity
     {

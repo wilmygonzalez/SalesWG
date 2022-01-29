@@ -1,8 +1,7 @@
 ﻿using System.Linq.Expressions;
-using SalesWG.Shared.Data;
-using SalesWG.Shared.Models;
+using SalesWG.Server.Data;
 
-namespace SalesWG.Server.Interfaces.Repositories
+namespace SalesWG.Server.Repositories
 {
     public interface IRepository<T> where T : BaseEntity
     {

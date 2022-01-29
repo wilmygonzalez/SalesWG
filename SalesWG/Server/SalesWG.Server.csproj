@@ -22,5 +22,9 @@
     <ProjectReference Include="..\Shared\SalesWG.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\Client\Controllers\" />
+  </ItemGroup>
+
 
 </Project>

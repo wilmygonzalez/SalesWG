@@ -1,18 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SalesWG.Shared.Models.Category
+namespace SalesWG.Shared.Models.Admin.Catalog.Category
 {
-    public class AddCategoryRequest
+    public class Category
     {
-        [Required]
+        public int Id { get; set; }
         public string Name { get; set; }
-        [Required]
         public string Description { get; set; }
-        public ParentCategory? ParentCategory { get; set; }
+        public ParentCategory ParentCategory { get; set; }
     }
 }

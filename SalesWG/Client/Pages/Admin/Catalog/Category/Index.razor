@@ -1,6 +1,6 @@
 ﻿@page "/"
 @using SalesWG.Client.Shared.Components
-@using SalesWG.Shared.Data
+@using SalesWG.Shared.Models.Admin.Catalog.Category
 
 @inject IDialogService _dialogService
 @inject HttpClient _httpClient
@@ -27,7 +27,7 @@
         <MudTd DataLabel="#">@context.Id</MudTd>
         <MudTd DataLabel="Name">@context.Name</MudTd>
         <MudTd DataLabel="Description">@context.Description</MudTd>
-        <MudTd DataLabel="Parent Name">@context.Parent?.Name</MudTd>
+        <MudTd DataLabel="Parent Name">@context.ParentCategory?.Name</MudTd>
         <MudTd DataLabel="Actions">
             <MudTooltip Text="Edit">
                 <MudIconButton OnClick="@(() => OpenEditDialog(context))" Icon="@Icons.Material.Filled.Edit" Variant="Variant.Filled" Color="Color.Warning" Size="Size.Medium" />
@@ -84,7 +84,7 @@
 
     private async Task GetAllCategories()
     {
-        categories = await _httpClient.GetFromJsonAsync<List<Category>>("api/category/GetCategories");
+        categories = await _httpClient.GetFromJsonAsync<List<Category>>("api/admin/category/GetCategories");
     }
 
 

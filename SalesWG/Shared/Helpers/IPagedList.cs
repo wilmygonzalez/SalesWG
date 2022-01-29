@@ -1,4 +1,4 @@
-﻿namespace SalesWG.Shared.Helpers.Interfaces
+﻿namespace SalesWG.Shared.Helpers
 {
     public interface IPagedList<T> : IList<T>
     {

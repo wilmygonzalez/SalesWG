@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SalesWG.Shared.Data;
-using SalesWG.Shared.Models;
 
 namespace SalesWG.Server.Data
 {

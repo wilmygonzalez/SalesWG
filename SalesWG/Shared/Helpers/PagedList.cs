@@ -1,6 +1,4 @@
-﻿using SalesWG.Shared.Helpers.Interfaces;
-
-namespace SalesWG.Shared.Helpers
+﻿namespace SalesWG.Shared.Helpers
 {
     public class PagedList<T> : List<T>, IPagedList<T>
     {

@@ -1,7 +1,6 @@
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using SalesWG.Server.Data;
-using SalesWG.Server.Interfaces.Repositories;
 using SalesWG.Server.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);

@@ -1,14 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using SalesWG.Server.Helpers;
-using SalesWG.Server.Interfaces.Repositories;
-using SalesWG.Shared.Data;
-using SalesWG.Shared.Models;
-using SalesWG.Shared.Models.Category;
+using SalesWG.Server.Data;
+using SalesWG.Server.Repositories;
+using SharedModels = SalesWG.Shared.Models.Admin.Catalog.Category;
 
-namespace SalesWG.Server.Controllers
+namespace SalesWG.Server.Areas.Admin.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/admin/[controller]")]
     [ApiController]
     public class CategoryController : ControllerBase
     {
@@ -20,24 +18,34 @@ namespace SalesWG.Server.Controllers
             _categoryRepository = categoryRepository;
         }
 
-        // GET: api/Categories
         [HttpGet("GetCategories")]
-        public async Task<IEnumerable<Category>> GetCategories()
+        public async Task<IEnumerable<SharedModels.Category>> GetCategories()
         {
             var categories = await _categoryRepository
                 .GetAll()
                 .Include(x => x.Parent)
+                .Select(x => new SharedModels.Category
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Description = x.Description,
+                    ParentCategory = x.Parent != null ? new SharedModels.ParentCategory 
+                    { 
+                        Id = x.Parent.Id, 
+                        Name = x.Parent.Name 
+                    } : null
+                })
                 .ToListAsync();
 
             return categories;
         }
 
         [HttpGet("GetCategoriesByName/{name}")]
-        public async Task<IEnumerable<ParentCategory>> GetCategoriesByName(string name)
+        public async Task<IEnumerable<SharedModels.ParentCategory>> GetCategoriesByName(string name)
         {
             var parentCategories = await _categoryRepository
                 .FindAsync(x => x.Name.ToLower().Contains(name.ToLower()))
-                .Select(x => new ParentCategory
+                .Select(x => new SharedModels.ParentCategory
                 {
                     Id = x.Id,
                     Name = x.Name
@@ -47,39 +55,36 @@ namespace SalesWG.Server.Controllers
         }
 
         // GET: api/Categories/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Category>> GetCategory(long id)
-        {
-            var category = await _categoryRepository.GetByIdAsync(id);
+        //[HttpGet("{id}")]
+        //public async Task<ActionResult<SharedModels.Category>> GetCategory(long id)
+        //{
+        //    var category = await _categoryRepository.GetByIdAsync(id);
 
-            if (category == null)
-                return NotFound();
+        //    if (category == null)
+        //        return NotFound();
 
-            return category;
-        }
+        //    return category;
+        //}
 
         // PUT: api/Categories/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutCategory(long id, Category category)
-        {
-            if (id != category.Id)
-                return BadRequest();
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> PutCategory(long id, SharedModels.AddEditCategoryRequest category)
+        //{
+        //    var categoryExists = await CategoryExists(id);
 
-            var categoryExists = await CategoryExists(id);
+        //    if (!categoryExists)
+        //        return NotFound();
 
-            if (!categoryExists)
-                return NotFound();
+        //    await _categoryRepository.UpdateAsync(category);
 
-            await _categoryRepository.UpdateAsync(category);
-
-            return Ok();
-        }
+        //    return Ok();
+        //}
 
         // POST: api/Categories
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost("SaveCategory")]
-        public async Task<IActionResult> PostCategory(AddCategoryRequest request)
+        public async Task<IActionResult> PostCategory(SharedModels.AddEditCategoryRequest request)
         {
             var category = new Category
             {
