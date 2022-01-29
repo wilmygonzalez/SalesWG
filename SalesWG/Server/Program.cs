@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using SalesWG.Server.Data;
 using SalesWG.Server.Interfaces.Repositories;
@@ -13,7 +14,8 @@ options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")
 /* Repositories */
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews()
+    .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.AddRazorPages();
 
 var app = builder.Build();

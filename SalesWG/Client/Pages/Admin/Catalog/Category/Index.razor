@@ -18,14 +18,16 @@
     </ToolBarContent>
     <HeaderContent>
         <MudTh>#</MudTh>
-        <MudTh>Sign</MudTh>
         <MudTh>Name</MudTh>
+        <MudTh>Description</MudTh>
+        <MudTh>Parent Name</MudTh>
         <MudTh>Actions</MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="#">@context.Id</MudTd>
-        <MudTd DataLabel="Sign">@context.Name</MudTd>
-        <MudTd DataLabel="Name">@context.Description</MudTd>
+        <MudTd DataLabel="Name">@context.Name</MudTd>
+        <MudTd DataLabel="Description">@context.Description</MudTd>
+        <MudTd DataLabel="Parent Name">@context.Parent?.Name</MudTd>
         <MudTd DataLabel="Actions">
             <MudTooltip Text="Edit">
                 <MudIconButton OnClick="@(() => OpenEditDialog(context))" Icon="@Icons.Material.Filled.Edit" Variant="Variant.Filled" Color="Color.Warning" Size="Size.Medium" />

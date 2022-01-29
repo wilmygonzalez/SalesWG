@@ -1,5 +1,6 @@
 ﻿@using SalesWG.Shared.Data;
 @using SalesWG.Shared.Models
+@using SalesWG.Shared.Models.Category
 
 @inject HttpClient _httpClient
 
@@ -11,7 +12,7 @@
             Label="Name" Variant="Variant.Outlined" Margin="Margin.Dense"></MudTextField>
         <MudTextField @bind-Value="category.Description" For="@(() => category.Description)" 
             Label="Description" Variant="Variant.Outlined" Margin="Margin.Dense" Lines="7" />
-        <MudAutocomplete T="ParentCategory" Label="Parent Category" @bind-Value="parentCategory" SearchFunc="@SearchCategory" 
+        <MudAutocomplete T="ParentCategory" Label="Parent Category" @bind-Value="category.ParentCategory" SearchFunc="@SearchCategory" 
             Margin="Margin.Dense" Variant="Variant.Outlined" ToStringFunc="@(e => e.Name)" />
 
     </DialogContent>
@@ -26,12 +27,12 @@
 @code {
     [CascadingParameter] MudDialogInstance _mudDialog { get; set; }
 
-    private Category category = new();
+    private AddCategoryRequest category = new();
     private ParentCategory parentCategory = new();
 
     private async Task SaveAsync()
     {
-        await _httpClient.PostAsJsonAsync<Category>("/api/category/", category);
+        await _httpClient.PostAsJsonAsync<AddCategoryRequest>("/api/category/SaveCategory", category);
         _mudDialog.Close(DialogResult.Ok(true));
     }
 

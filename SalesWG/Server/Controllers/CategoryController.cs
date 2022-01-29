@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SalesWG.Server.Helpers;
 using SalesWG.Server.Interfaces.Repositories;
 using SalesWG.Shared.Data;
 using SalesWG.Shared.Models;
+using SalesWG.Shared.Models.Category;
 
 namespace SalesWG.Server.Controllers
 {
@@ -24,6 +26,7 @@ namespace SalesWG.Server.Controllers
         {
             var categories = await _categoryRepository
                 .GetAll()
+                .Include(x => x.Parent)
                 .ToListAsync();
 
             return categories;
@@ -75,12 +78,19 @@ namespace SalesWG.Server.Controllers
 
         // POST: api/Categories
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Category>> PostCategory(Category category)
+        [HttpPost("SaveCategory")]
+        public async Task<IActionResult> PostCategory(AddCategoryRequest request)
         {
+            var category = new Category
+            {
+                Name = request.Name,
+                Description = request.Description,
+                ParentId = request.ParentCategory?.Id
+            };
+
             await _categoryRepository.InsertAsync(category);
 
-            return CreatedAtAction("GetCategory", new { id = category.Id }, category);
+            return Ok();
         }
 
         // DELETE: api/Categories/5

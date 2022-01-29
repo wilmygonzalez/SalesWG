@@ -12,8 +12,8 @@ using SalesWG.Server.Data;
 namespace SalesWG.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220129173146_initial")]
-    partial class initial
+    [Migration("20220129191011_category2")]
+    partial class category2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -43,7 +43,7 @@ namespace SalesWG.Server.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("ParentCategoryId")
+                    b.Property<int?>("ParentId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("UpdatedDate")
@@ -51,7 +51,23 @@ namespace SalesWG.Server.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ParentId");
+
                     b.ToTable("Category");
+                });
+
+            modelBuilder.Entity("SalesWG.Shared.Data.Category", b =>
+                {
+                    b.HasOne("SalesWG.Shared.Data.Category", "Parent")
+                        .WithMany("Childrens")
+                        .HasForeignKey("ParentId");
+
+                    b.Navigation("Parent");
+                });
+
+            modelBuilder.Entity("SalesWG.Shared.Data.Category", b =>
+                {
+                    b.Navigation("Childrens");
                 });
 #pragma warning restore 612, 618
         }
