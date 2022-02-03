@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
@@ -19,11 +19,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Client\SalesWG.Client.csproj" />
-    <ProjectReference Include="..\Shared\SalesWG.Shared.csproj" />
+    <ProjectReference Include="..\SalesWG.Shared\SalesWG.Shared.csproj" />
+    <ProjectReference Include="..\Shared\SalesWG.Shared.Client.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Client\Controllers\" />
+    <Folder Include="Client\Controllers\" />
   </ItemGroup>
 
 

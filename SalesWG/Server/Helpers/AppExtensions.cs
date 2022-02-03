@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SalesWG.Shared.Admin.Helpers;
 using SalesWG.Shared.Helpers;
+using SalesWG.Shared.Requests;
 
 namespace SalesWG.Server.Helpers
 {
@@ -15,8 +17,23 @@ namespace SalesWG.Server.Helpers
             var count = await source.CountAsync();
 
             var data = new List<T>();
+            data.AddRange(await source.Skip(pageIndex * pageSize).Take(pageSize).ToListAsync());
 
-            return new PagedList<T>(data, pageIndex, pageSize, count); 
+            return new PagedList<T>(data, pageIndex, pageSize, count);
+        }
+
+        public static PagedResponse<T> ToPagedResponse<T>(this IPagedList<T> source)
+        {
+            return new PagedResponse<T>
+            {
+                PageIndex = source.PageIndex,
+                PageSize = source.PageSize,
+                TotalCount = source.TotalCount,
+                TotalPages = source.TotalPages,
+                HasPreviousPage = source.HasPreviousPage,
+                HasNextPage = source.HasNextPage,
+                Data = source.ToList()
+            };
         }
     }
 }

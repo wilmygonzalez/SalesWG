@@ -1,4 +1,4 @@
-﻿namespace SalesWG.Shared.Models.Admin.Catalog.Category
+﻿namespace SalesWG.Shared.Admin.Models.Catalog.Category
 {
     public class ParentCategory
     {

@@ -1,6 +1,10 @@
 ﻿@page "/"
 @using SalesWG.Client.Shared.Components
-@using SalesWG.Shared.Models.Admin.Catalog.Category
+@using SalesWG.Shared.Admin.Models.Catalog.Category
+@using SalesWG.Shared.Admin.Requests.Catalog.Category
+@using SalesWG.Shared.Admin.Responses.Catalog.Category
+@using SalesWG.Shared.Helpers
+@using SalesWG.Shared.Requests
 
 @inject IDialogService _dialogService
 @inject HttpClient _httpClient
@@ -10,7 +14,7 @@
         Add Category
 </MudButton>
 
-<MudTable Elevation="3" Items="@categories" Hover="true" Breakpoint="Breakpoint.Xs" HorizontalScrollbar="true" LoadingProgressColor="Color.Info">
+<MudTable Elevation="3" Items="@categories.Data" Hover="true" Breakpoint="Breakpoint.Xs" HorizontalScrollbar="true" LoadingProgressColor="Color.Info">
     <ToolBarContent>
         <MudText Typo="Typo.h6">Categories</MudText>
         <MudSpacer />
@@ -30,7 +34,7 @@
         <MudTd DataLabel="Parent Name">@context.ParentCategory?.Name</MudTd>
         <MudTd DataLabel="Actions">
             <MudTooltip Text="Edit">
-                <MudIconButton OnClick="@(() => OpenEditDialog(context))" Icon="@Icons.Material.Filled.Edit" Variant="Variant.Filled" Color="Color.Warning" Size="Size.Medium" />
+                <MudIconButton OnClick="@(() => OpenEditDialog(context.Id))" Icon="@Icons.Material.Filled.Edit" Variant="Variant.Filled" Color="Color.Warning" Size="Size.Medium" />
             </MudTooltip>
             <MudTooltip Text="Delete">
                 <MudIconButton OnClick="@(() => OpenDeleteDialog(context.Id))" Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled" Color="Color.Error" Size="Size.Medium" />
@@ -42,7 +46,8 @@
 @code {
     DialogOptions options = new DialogOptions() { CloseButton = true };
 
-    private IEnumerable<Category> categories = new List<Category>();
+    private PagedResponse<CategoryResponse> categories = new();
+    private PagedRequest pagedRequest = new PagedRequest { PageIndex = 0, PageSize = 10};
     private string searchString;
     private bool sortByNameLength;
 
@@ -62,12 +67,21 @@
         }
     }
 
-    private async Task OpenEditDialog(Category category)
+    private async Task OpenEditDialog(int id)
     {
-        var parameters = new DialogParameters();
-        parameters.Add("Category", category);
+        var category = await _httpClient.GetFromJsonAsync<CategoryResponse>($"api/admin/category/GetCategoryById/{id}");
+        var request = new AddEditCategoryRequest
+        {
+            Id = id,
+            Name = category.Name,
+            Description = category.Description,
+            ParentCategory = category.ParentCategory
+        };
 
-        var dialog = _dialogService.Show<Edit>($"Edit Category #{category.Id}", parameters, options);
+        var parameters = new DialogParameters();
+        parameters.Add("Category", request);
+
+        var dialog = _dialogService.Show<Edit>($"Edit Category #{id}", parameters, options);
 
         var result = await dialog.Result;
         if (!result.Cancelled)
@@ -84,9 +98,8 @@
 
     private async Task GetAllCategories()
     {
-        categories = await _httpClient.GetFromJsonAsync<List<Category>>("api/admin/category/GetCategories");
+        var uri = $"api/admin/category/GetAllCategories?PageIndex={pagedRequest.PageIndex}&PageSize={pagedRequest.PageSize}&SearchString={pagedRequest.SearchString}";
+        categories = await _httpClient.GetFromJsonAsync<PagedResponse<CategoryResponse>>(uri);
     }
-
-
 
 }

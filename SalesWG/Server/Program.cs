@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
+using SalesWG.Server.Admin.Repositories;
 using SalesWG.Server.Data;
 using SalesWG.Server.Repositories;
 
@@ -12,6 +13,8 @@ options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")
 
 /* Repositories */
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+
 
 builder.Services.AddControllersWithViews()
     .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);

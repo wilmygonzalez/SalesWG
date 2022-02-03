@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SalesWG.Shared.Admin.Models.Catalog.Category;
 
-namespace SalesWG.Shared.Models.Admin.Catalog.Category
+namespace SalesWG.Shared.Admin.Responses.Catalog.Category
 {
-    public class Category
+    public class CategoryResponse
     {
         public int Id { get; set; }
         public string Name { get; set; }
