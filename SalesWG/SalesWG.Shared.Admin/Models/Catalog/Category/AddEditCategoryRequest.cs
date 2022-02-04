@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using SalesWG.Shared.Admin.Models.Catalog.Category;
 
-namespace SalesWG.Shared.Admin.Requests.Catalog.Category
+namespace SalesWG.Shared.Admin.Models.Catalog.Category
 {
     public class AddEditCategoryRequest
     {

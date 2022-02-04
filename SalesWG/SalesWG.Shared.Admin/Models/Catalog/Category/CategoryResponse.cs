@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SalesWG.Shared.Admin.Models.Catalog.Category;
 
-namespace SalesWG.Shared.Admin.Responses.Catalog.Category
+namespace SalesWG.Shared.Admin.Models.Catalog.Category
 {
     public class CategoryResponse
     {

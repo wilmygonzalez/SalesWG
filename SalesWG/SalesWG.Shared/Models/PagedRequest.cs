@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SalesWG.Shared.Requests
+namespace SalesWG.Shared.Models
 {
     public class PagedRequest
     {

@@ -1,10 +1,8 @@
 ﻿@page "/"
 @using SalesWG.Client.Shared.Components
 @using SalesWG.Shared.Admin.Models.Catalog.Category
-@using SalesWG.Shared.Admin.Requests.Catalog.Category
-@using SalesWG.Shared.Admin.Responses.Catalog.Category
 @using SalesWG.Shared.Helpers
-@using SalesWG.Shared.Requests
+@using SalesWG.Shared.Models
 
 @inject IDialogService _dialogService
 @inject HttpClient _httpClient
@@ -69,13 +67,13 @@
 
     private async Task OpenEditDialog(int id)
     {
-        var category = await _httpClient.GetFromJsonAsync<CategoryResponse>($"api/admin/category/GetCategoryById/{id}");
+        var response = await _httpClient.GetFromJsonAsync<AppResponse<CategoryResponse>>($"api/admin/category/GetCategoryById/{id}");
         var request = new AddEditCategoryRequest
         {
             Id = id,
-            Name = category.Name,
-            Description = category.Description,
-            ParentCategory = category.ParentCategory
+            Name = response.Data.Name,
+            Description = response.Data.Description,
+            ParentCategory = response.Data.ParentCategory
         };
 
         var parameters = new DialogParameters();
@@ -99,7 +97,8 @@
     private async Task GetAllCategories()
     {
         var uri = $"api/admin/category/GetAllCategories?PageIndex={pagedRequest.PageIndex}&PageSize={pagedRequest.PageSize}&SearchString={pagedRequest.SearchString}";
-        categories = await _httpClient.GetFromJsonAsync<PagedResponse<CategoryResponse>>(uri);
+        var response = await _httpClient.GetFromJsonAsync<AppResponse<PagedResponse<CategoryResponse>>>(uri);
+        categories = response.Data;
     }
 
 }

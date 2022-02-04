@@ -2,12 +2,8 @@
 using SalesWG.Server.Data;
 using SalesWG.Server.Helpers;
 using SalesWG.Server.Repositories;
-using SalesWG.Shared.Admin.Helpers;
 using SalesWG.Shared.Admin.Models.Catalog.Category;
-using SalesWG.Shared.Admin.Requests.Catalog.Category;
-using SalesWG.Shared.Admin.Responses.Catalog.Category;
-using SalesWG.Shared.Helpers;
-using SalesWG.Shared.Requests;
+using SalesWG.Shared.Models;
 
 namespace SalesWG.Server.Admin.Repositories
 {
@@ -15,7 +11,7 @@ namespace SalesWG.Server.Admin.Repositories
     {
         public CategoryRepository(AppDbContext appDbContext) : base(appDbContext) { }
 
-        public async Task<IPagedList<CategoryResponse>> GetAllCategories(int pageIndex, int pageSize, string searchString)
+        public async Task<AppResponse<PagedResponse<CategoryResponse>>> GetAllCategories(int pageIndex, int pageSize, string searchString)
         {
             var categories = await base.GetAll()
                 .Include(x => x.Parent)
@@ -34,10 +30,29 @@ namespace SalesWG.Server.Admin.Repositories
                 })
                 .ToPagedListAsync(pageIndex, pageSize);
 
-            return categories;
+            var response = new AppResponse<PagedResponse<CategoryResponse>> 
+            { 
+                Data = categories.ToPagedResponse() 
+            };
+
+            return response;
         }
 
-        public async Task<CategoryResponse> GetCategoryById(int id)
+        public async Task<AppResponse<IEnumerable<ParentCategory>>> GetParentCategoriesBySearch(string searchString)
+        {
+            var parentCategories = await base.FindAsync(x => x.Name.ToLower().Contains(searchString.ToLower()))
+                .Select(x => new ParentCategory
+                {
+                    Id = x.Id,
+                    Name = x.Name
+                })
+                .Take(10)
+                .ToListAsync();
+
+            return new AppResponse<IEnumerable<ParentCategory>> { Data = parentCategories };
+        }
+
+        public async Task<AppResponse<CategoryResponse>> GetCategoryById(int id)
         {
             var category = await base.GetByIdAsync(id);
 
@@ -53,22 +68,10 @@ namespace SalesWG.Server.Admin.Repositories
                 } : null
             };
 
-            return categoryResponse;
+            return new AppResponse<CategoryResponse> { Data = categoryResponse };
         }
 
-        public async Task<IEnumerable<ParentCategory>> GetParentCategoriesBySearch(string searchString)
-        {
-            var parentCategories = await base.FindAsync(x => x.Name.ToLower().Contains(searchString.ToLower()))
-                .Select(x => new ParentCategory
-                {
-                    Id = x.Id,
-                    Name = x.Name
-                }).Take(10).ToListAsync();
-
-            return parentCategories;
-        }
-
-        public async Task InsertCategory(AddEditCategoryRequest request)
+        public async Task<AppResponse<CategoryResponse>> InsertCategory(AddEditCategoryRequest request)
         {
             var category = new Category
             {
@@ -78,17 +81,52 @@ namespace SalesWG.Server.Admin.Repositories
             };
 
             await base.InsertAsync(category);
+
+            return new AppResponse<CategoryResponse> { Message = "Category created." };
         }
 
-        public async Task UpdateCategory(AddEditCategoryRequest request)
+        public async Task<AppResponse<CategoryResponse>> UpdateCategory(AddEditCategoryRequest request)
         {
             var category = await base.GetByIdAsync(request.Id);
+            if (category == null)
+            {
+                return new AppResponse<CategoryResponse>
+                {
+                    Message = "This category doesn't exist.",
+                    Success = false
+                };
+            }
 
             category.Name = request.Name;
             category.Description = request.Description;
             category.ParentId = request.ParentCategory?.Id;
 
             await base.InsertAsync(category);
+
+            return new AppResponse<CategoryResponse> { Message = "Category updated." };
+        }
+
+        public async Task<AppResponse<CategoryResponse>> DeleteCategory(int id)
+        {
+            var category = await base.GetByIdAsync(id);
+
+            if (category == null)
+            {
+                return new AppResponse<CategoryResponse>
+                {
+                    Message = "This category cannot be deleted.",
+                    Success = false
+                };
+            }
+
+            await base.DeleteAsync(category);
+
+            return new AppResponse<CategoryResponse> { Message = "Category deleted." };
+        }
+
+        private async Task<bool> CategoryExists(long id)
+        {
+            return await base.Exists(id);
         }
     }
 }

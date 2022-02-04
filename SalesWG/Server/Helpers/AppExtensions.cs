@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SalesWG.Shared.Admin.Helpers;
 using SalesWG.Shared.Helpers;
-using SalesWG.Shared.Requests;
+using SalesWG.Shared.Models;
 
 namespace SalesWG.Server.Helpers
 {

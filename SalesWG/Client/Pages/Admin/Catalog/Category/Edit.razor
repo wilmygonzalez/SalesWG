@@ -1,5 +1,5 @@
 ﻿@using SalesWG.Shared.Admin.Models.Catalog.Category
-@using SalesWG.Shared.Admin.Requests.Catalog.Category
+@using SalesWG.Shared.Models
 @inject HttpClient _httpClient
 
 <EditForm Model="@category" OnValidSubmit="SaveAsync">
@@ -33,7 +33,8 @@
 
     private async Task<IEnumerable<ParentCategory>> SearchCategory(string name)
     {
-        return await _httpClient.GetFromJsonAsync<IEnumerable<ParentCategory>>($"/api/admin/category/GetParentCategoriesBySearch/{name}");
+        var result = await _httpClient.GetFromJsonAsync<AppResponse<IEnumerable<ParentCategory>>>($"/api/admin/category/GetParentCategoriesBySearch/{name}");
+        return result.Data;
     }
 
     private void Cancel()
