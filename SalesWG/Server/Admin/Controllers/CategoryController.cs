@@ -27,10 +27,10 @@ namespace SalesWG.Server.Admin.Controllers
             return Ok(result);
         }
 
-        [HttpGet("GetParentCategoriesBySearch/{stringSearch}")]
-        public async Task<IActionResult> GetParentCategoriesBySearch(string stringSearch)
+        [HttpGet("GetParentCategoriesBySearch/{stringSearch}/{categoryId}")]
+        public async Task<IActionResult> GetParentCategoriesBySearch(string stringSearch, int categoryId)
         {
-            var result = await _categoryRepository.GetParentCategoriesBySearch(stringSearch);
+            var result = await _categoryRepository.GetParentCategoriesBySearch(stringSearch, categoryId);
             return Ok(result);
         }
 
@@ -48,7 +48,7 @@ namespace SalesWG.Server.Admin.Controllers
             return Ok(result);
         }
 
-        [HttpPut("UpdateCategory/{id}")]
+        [HttpPut("UpdateCategory")]
         public async Task<IActionResult> UpdateCategory(AddEditCategoryRequest category)
         {
             var result = await _categoryRepository.UpdateCategory(category);

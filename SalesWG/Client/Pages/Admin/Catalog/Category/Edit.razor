@@ -14,7 +14,7 @@
             Margin="Margin.Dense" Variant="Variant.Outlined" ToStringFunc="@(e => e.Name)" />
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Variant="Variant.Filled" Size="Size.Medium" OnClick="Cancel">Cancel</MudButton>
         <MudButton ButtonType="ButtonType.Submit" StartIcon="@Icons.Filled.Save" Variant="Variant.Filled" Color="Color.Success">Save Changes</MudButton>
     </DialogActions>
 </MudDialog>
@@ -33,7 +33,7 @@
 
     private async Task<IEnumerable<ParentCategory>> SearchCategory(string name)
     {
-        var result = await _httpClient.GetFromJsonAsync<AppResponse<IEnumerable<ParentCategory>>>($"/api/admin/category/GetParentCategoriesBySearch/{name}");
+        var result = await _httpClient.GetFromJsonAsync<AppResponse<IEnumerable<ParentCategory>>>($"/api/admin/category/GetParentCategoriesBySearch/{name}/{category.Id}");
         return result.Data;
     }
 

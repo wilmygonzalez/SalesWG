@@ -38,9 +38,10 @@ namespace SalesWG.Server.Admin.Repositories
             return response;
         }
 
-        public async Task<AppResponse<IEnumerable<ParentCategory>>> GetParentCategoriesBySearch(string searchString)
+        public async Task<AppResponse<IEnumerable<ParentCategory>>> GetParentCategoriesBySearch(string searchString, int categoryId = 0)
         {
-            var parentCategories = await base.FindAsync(x => x.Name.ToLower().Contains(searchString.ToLower()))
+            var parentCategories = await base.FindAsync(x => x.Name.ToLower().Contains(searchString.ToLower()) &&
+                                                        (categoryId == 0 || (x.ParentId != categoryId && x.Id != categoryId)))
                 .Select(x => new ParentCategory
                 {
                     Id = x.Id,
@@ -101,7 +102,7 @@ namespace SalesWG.Server.Admin.Repositories
             category.Description = request.Description;
             category.ParentId = request.ParentCategory?.Id;
 
-            await base.InsertAsync(category);
+            await base.UpdateAsync(category);
 
             return new AppResponse<CategoryResponse> { Message = "Category updated." };
         }

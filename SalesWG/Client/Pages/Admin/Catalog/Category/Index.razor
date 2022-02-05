@@ -91,7 +91,20 @@
     private async Task OpenDeleteDialog(int id)
     {
         var options = new DialogOptions { CloseOnEscapeKey = true };
-        _dialogService.Show<Dialog>("Simple Dialog", options);
+
+        var parameters = new DialogParameters();
+        parameters.Add("ContentText", "Are you sure to want to delete this category?");
+        parameters.Add("ButtonText", "Delete Category");
+        parameters.Add("Color", Color.Error);
+
+        var dialog = _dialogService.Show<Dialog>($"Delete Category #{id}", parameters, options);
+
+        var result = await dialog.Result;
+        if (!result.Cancelled)
+        {
+            await _httpClient.DeleteAsync($"api/admin/category/DeleteCategory/{id}");
+            await GetAllCategories();
+        }
     }
 
     private async Task GetAllCategories()

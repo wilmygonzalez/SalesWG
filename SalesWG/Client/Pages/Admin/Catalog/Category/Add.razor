@@ -35,7 +35,7 @@
 
     private async Task<IEnumerable<ParentCategory>> SearchCategory(string name)
     {
-        var result = await _httpClient.GetFromJsonAsync<AppResponse<IEnumerable<ParentCategory>>>($"/api/admin/category/GetParentCategoriesBySearch/{name}");
+        var result = await _httpClient.GetFromJsonAsync<AppResponse<IEnumerable<ParentCategory>>>($"/api/admin/category/GetParentCategoriesBySearch/{name}/0");
         return result.Data;
     }
 
