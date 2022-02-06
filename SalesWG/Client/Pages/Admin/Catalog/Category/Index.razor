@@ -1,7 +1,8 @@
-﻿@page "/catalog/category"
+﻿@page "/admin/catalog/category"
+
+@layout AdminLayout
 
 @attribute [Authorize(Policy = AppPermissions.Categories.View)]
-@using SalesWG.Client.Shared.Components
 @using SalesWG.Shared.Admin.Models.Catalog.Category
 @using SalesWG.Shared.Helpers
 @using SalesWG.Shared.Models

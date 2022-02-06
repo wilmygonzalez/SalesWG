@@ -145,7 +145,12 @@ namespace SalesWG.Server.Admin.Repositories
             await _userManager.UpdateAsync(user);
 
             var token = await GenerateJwtAsync(user);
-            var response = new TokenResponse { Token = token, RefreshToken = user.RefreshToken, UserImageURL = user.ProfilePictureDataUrl };
+            var response = new TokenResponse 
+            { 
+                Token = token, 
+                RefreshToken = user.RefreshToken, 
+                UserImageURL = user.ProfilePictureDataUrl 
+            };
             
             return AppResponse<TokenResponse>.Valid(response, $"Login successfully {DateTime.UtcNow}");
         }
@@ -168,6 +173,7 @@ namespace SalesWG.Server.Admin.Repositories
             {
                 return AppResponse<TokenResponse>.Invalid("Invalid Client Token.");
             }
+
             var token = GenerateEncryptedToken(GetSigningCredentials(), await GetClaimsAsync(user));
             user.RefreshToken = GenerateRefreshToken();
             await _userManager.UpdateAsync(user);

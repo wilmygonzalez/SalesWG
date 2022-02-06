@@ -22,10 +22,10 @@
 
   <ItemGroup>
     <Folder Include="Pages\Admin\Catalog\Manufacturer\" />
+    <Folder Include="Pages\Admin\Catalog\Product\" />
     <Folder Include="Pages\Admin\Configuration\" />
     <Folder Include="Pages\Admin\Reports\" />
     <Folder Include="Pages\Admin\Promotions\" />
-    <Folder Include="Pages\Client\" />
   </ItemGroup>
 
 </Project>
