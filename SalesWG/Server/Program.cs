@@ -1,19 +1,17 @@
 using System.Text.Json.Serialization;
-using Microsoft.EntityFrameworkCore;
-using SalesWG.Server.Admin.Repositories;
-using SalesWG.Server.Data;
-using SalesWG.Server.Repositories;
+using SalesWG.Server.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Configure Services
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDatabase(builder.Configuration);
+builder.Services.AddIdentity();
+builder.Services.AddJwtAuthentication(builder.Services.GetApplicationSettings(builder.Configuration));
+builder.Services.AddApplicationServices();
+// End Configure Services
 
-/* Repositories */
-builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+
 
 
 builder.Services.AddControllersWithViews()
@@ -40,10 +38,11 @@ app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapRazorPages();
 app.MapControllers();
 app.MapFallbackToFile("index.html");
-
+app.Initialize(builder.Configuration);
 app.Run();

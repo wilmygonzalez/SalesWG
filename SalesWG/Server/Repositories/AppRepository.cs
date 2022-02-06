@@ -4,11 +4,11 @@ using SalesWG.Server.Data;
 
 namespace SalesWG.Server.Repositories
 {
-    public class Repository<T> : IRepository<T> where T : BaseEntity
+    public class AppRepository<T> : IAppRepository<T> where T : BaseEntity
     {
         private readonly AppDbContext _dbContext;
 
-        public Repository(AppDbContext dbContext)
+        public AppRepository(AppDbContext dbContext)
         {
             _dbContext = dbContext;
         }

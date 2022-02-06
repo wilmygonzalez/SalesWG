@@ -6,15 +6,16 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using SalesWG.Shared.Helpers;
+using SalesWG.Shared.Models;
 
-namespace SalesWG.Shared.Admin.Helpers
+namespace SalesWG.Shared.Helpers
 {
     internal static class ResultExtensions
     {
-        internal static async Task<IResult<T>> ToResult<T>(this HttpResponseMessage response)
+        internal static async Task<AppResponse<T>> ToResult<T>(this HttpResponseMessage response)
         {
             var responseAsString = await response.Content.ReadAsStringAsync();
-            var responseObject = JsonSerializer.Deserialize<Result<T>>(responseAsString, new JsonSerializerOptions
+            var responseObject = JsonSerializer.Deserialize<AppResponse<T>>(responseAsString, new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true,
                 ReferenceHandler = ReferenceHandler.IgnoreCycles
@@ -22,10 +23,10 @@ namespace SalesWG.Shared.Admin.Helpers
             return responseObject;
         }
 
-        internal static async Task<IResult> ToResult(this HttpResponseMessage response)
+        internal static async Task<AppResponse> ToResult(this HttpResponseMessage response)
         {
             var responseAsString = await response.Content.ReadAsStringAsync();
-            var responseObject = JsonSerializer.Deserialize<Result>(responseAsString, new JsonSerializerOptions
+            var responseObject = JsonSerializer.Deserialize<AppResponse>(responseAsString, new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true,
                 ReferenceHandler = ReferenceHandler.IgnoreCycles

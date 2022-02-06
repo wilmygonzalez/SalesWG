@@ -9,9 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalesWG.Client", "Client\Sa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalesWG.Shared.Client", "Shared\SalesWG.Shared.Client.csproj", "{605E1559-DE34-4E84-8E2E-22EF620BFA6D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalesWG.Shared.Admin", "SalesWG.Shared.Admin\SalesWG.Shared.Admin.csproj", "{D6BC753A-25CA-48C1-9316-4FD05445CB87}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalesWG.Shared.Admin", "SalesWG.Shared.Admin\SalesWG.Shared.Admin.csproj", "{D6BC753A-25CA-48C1-9316-4FD05445CB87}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalesWG.Shared", "SalesWG.Shared\SalesWG.Shared.csproj", "{EC8357AC-6CCA-443D-8972-3E194B6390B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalesWG.Shared", "SalesWG.Shared\SalesWG.Shared.csproj", "{EC8357AC-6CCA-443D-8972-3E194B6390B3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,0 +1,46 @@
+﻿@page "/admin/login"
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Components.Authorization
+@using SalesWG.Shared.Models.Identity
+@using Microsoft.AspNetCore.WebUtilities
+
+<EditForm Model="@tokenRequest" OnValidSubmit="SubmitAsync">
+    <MudTextField T="string" Label="E-mail" Variant="Variant.Outlined"
+                          @bind-Value="tokenRequest.Email" For="@(() => tokenRequest.Email)" />
+
+    <MudTextField Label="Password" Variant="Variant.Outlined"
+                          @bind-Value="tokenRequest.Password" For="@(() => tokenRequest.Password)"
+                          InputType="@_passwordInput" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.VisibilityOff" />
+    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large">Sign In</MudButton>
+
+
+</EditForm>
+
+@code {
+    private TokenRequest tokenRequest = new();
+    private InputType _passwordInput = InputType.Password;
+    private string returnUrl = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var uri = _navigationManager.ToAbsoluteUri(_navigationManager.Uri);
+        if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("returnUrl", out var url))
+        {
+            returnUrl = url;
+        }
+
+        if (await _authService.IsUserAuthenticated())
+        {
+            _navigationManager.NavigateTo("/");
+        }
+    }
+
+    private async Task SubmitAsync()
+    {
+        var result = await _authService.Login(tokenRequest);
+        if (result.Success)
+        {
+            _navigationManager.NavigateTo(returnUrl);
+        }
+    }
+}

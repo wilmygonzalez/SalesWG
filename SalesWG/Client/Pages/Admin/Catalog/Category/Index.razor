@@ -1,11 +1,10 @@
-﻿@page "/"
+﻿@page "/catalog/category"
+
+@attribute [Authorize(Policy = AppPermissions.Categories.View)]
 @using SalesWG.Client.Shared.Components
 @using SalesWG.Shared.Admin.Models.Catalog.Category
 @using SalesWG.Shared.Helpers
 @using SalesWG.Shared.Models
-
-@inject IDialogService _dialogService
-@inject HttpClient _httpClient
 
 <MudButton OnClick="OpenAddDialog" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.AddBox" Color="Color.Info"
         Class="mb-3">

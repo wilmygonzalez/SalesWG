@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SalesWG.Server.Admin.Repositories;
-using SalesWG.Server.Helpers;
 using SalesWG.Shared.Admin.Models.Catalog.Category;
 using SalesWG.Shared.Models;
 
@@ -18,50 +17,49 @@ namespace SalesWG.Server.Admin.Controllers
             _categoryRepository = categoryRepository;
         }
 
-        [HttpGet]
-        [Route("GetAllCategories")]
+        [HttpGet("GetAllCategories")]
         public async Task<IActionResult> GetAllCategories([FromQuery] PagedRequest request)
         {
-            var result = await _categoryRepository.GetAllCategories(request.PageIndex, request.PageSize, request.SearchString);
+            var response = await _categoryRepository.GetAllCategoriesAsync(request.PageIndex, request.PageSize, request.SearchString);
 
-            return Ok(result);
+            return Ok(response);
         }
 
         [HttpGet("GetParentCategoriesBySearch/{stringSearch}/{categoryId}")]
         public async Task<IActionResult> GetParentCategoriesBySearch(string stringSearch, int categoryId)
         {
-            var result = await _categoryRepository.GetParentCategoriesBySearch(stringSearch, categoryId);
-            return Ok(result);
+            var response = await _categoryRepository.GetParentCategoriesBySearchAsync(stringSearch, categoryId);
+            return Ok(response);
         }
 
         [HttpGet("GetCategoryById/{id}")]
         public async Task<IActionResult> GetCategoryById(int id)
         {
-            var result = await _categoryRepository.GetCategoryById(id);
-            return Ok(result);
+            var response = await _categoryRepository.GetCategoryByIdAsync(id);
+            return Ok(response);
         }
 
         [HttpPost("InsertCategory")]
         public async Task<IActionResult> InsertCategory(AddEditCategoryRequest request)
         {
-            var result = await _categoryRepository.InsertCategory(request);
-            return Ok(result);
+            var response = await _categoryRepository.InsertCategoryAsync(request);
+            return Ok(response);
         }
 
         [HttpPut("UpdateCategory")]
         public async Task<IActionResult> UpdateCategory(AddEditCategoryRequest category)
         {
-            var result = await _categoryRepository.UpdateCategory(category);
+            var response = await _categoryRepository.UpdateCategoryAsync(category);
 
-            return Ok(result);
+            return Ok(response);
         }
 
         [HttpDelete("DeleteCategory/{id}")]
         public async Task<IActionResult> DeleteCategory(int id)
         {
-            var result = await _categoryRepository.DeleteCategory(id);
+            var response = await _categoryRepository.DeleteCategoryAsync(id);
 
-            return Ok(result);
+            return Ok(response);
         }
     }
 }

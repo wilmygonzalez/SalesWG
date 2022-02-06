@@ -3,7 +3,7 @@ using SalesWG.Server.Data;
 
 namespace SalesWG.Server.Repositories
 {
-    public interface IRepository<T> where T : BaseEntity
+    public interface IAppRepository<T> where T : BaseEntity
     {
         IQueryable<T> GetAll();
         Task<T> GetByIdAsync(long id);

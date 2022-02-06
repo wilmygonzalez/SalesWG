@@ -45,7 +45,11 @@
                 <UserCard Class="mt-n2" />
                 <MudDivider Class="mb-2" />
                 <MudListItem Text="Account" Icon="@Icons.Material.Outlined.Person" Href="/personal/account" />
-                <MudListItem Text="Logout" Icon="@Icons.Material.Outlined.Login" Href="/pages/authentication/login" />
+                <AuthorizeView>
+                    <Authorized>
+                        <MudListItem Text="Logout" Icon="@Icons.Material.Outlined.Login" Href="/admin/logout" />
+                    </Authorized>
+                </AuthorizeView>
             </ChildContent>
         </MudMenu>
     </MudAppBar>

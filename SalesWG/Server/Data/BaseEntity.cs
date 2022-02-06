@@ -6,7 +6,7 @@ namespace SalesWG.Server.Data
     {
         [Key]
         public int Id { get; set; }
-        public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
-        public DateTime UpdatedDate { get; set; }
+        public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
+        public DateTime UpdatedOn { get; set; }
     }
 }

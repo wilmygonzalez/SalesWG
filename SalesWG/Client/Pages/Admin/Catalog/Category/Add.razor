@@ -1,8 +1,6 @@
 ﻿@using SalesWG.Shared.Admin.Models.Catalog.Category
 @using SalesWG.Shared.Models
 
-@inject HttpClient _httpClient
-
 <EditForm Model="@category" OnValidSubmit="SaveAsync">
     <DataAnnotationsValidator />
     <MudDialog ClassActions="mud-dialog-actions px-6 py-4">

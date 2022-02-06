@@ -1,0 +1,9 @@
+﻿@page "/admin/logout"
+
+@code {
+	protected override async Task OnInitializedAsync()
+    {
+        await _authService.Logout();
+        _navigationManager.NavigateTo("/");
+    }
+}
